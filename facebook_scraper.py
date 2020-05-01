@@ -185,7 +185,8 @@ def _extract_text(article):
             url = f'{_base_url}{match.groups()[0].replace("&amp;", "&")}'
             response = _session.get(url, timeout=_timeout)
             article = response.html.find('.story_body_container', first=True)
-
+    if article is None:
+        return None, None, None
     nodes = article.find('p, header')
     if nodes:
         post_text = []
@@ -212,7 +213,7 @@ def _extract_text(article):
 
         return text, post_text, shared_text
 
-    return None
+    return None, None, None
 
 
 def _extract_time(article):
